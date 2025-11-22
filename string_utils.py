@@ -1,35 +1,26 @@
 def split_before_uppercases(formula):
-    start = 0
-    end = 1
-    elements_lst = []
-
     if not formula:
-        return elements_lst
+        return []
 
-    while end < len(formula):
-        if formula[end].isupper():
-            elements_lst.append(formula[start:end])
-            start = end
-        end += 1
+    elements = []
+    current = formula[0]
 
-    elements_lst.append(formula[start:])
-    return elements_lst
+    for ch in formula[1:]:
+        if ch.isupper():
+            elements.append(current)
+            current = ch
+        else:
+            current += ch
+
+    elements.append(current)
+    return elements
 
 
 def split_at_digit(formula):
-    digit_location = 1
-
-    for char in formula[1:]:
-        if char.isdigit():
-            break
-        digit_location += 1
-
-    if digit_location == len(formula):
-        return (formula, 1)
-
-    prefix = formula[:digit_location]
-    number = int(formula[digit_location:])
-    return (prefix, number)
+    for i, ch in enumerate(formula):
+        if ch.isdigit():
+            return formula[:i], int(formula[i:])
+    return formula, 1
 
 
 def count_atoms_in_molecule(molecular_formula):
@@ -47,23 +38,10 @@ def count_atoms_in_molecule(molecular_formula):
 
 
 def parse_chemical_reaction(reaction_equation):
-    """
-    Takes a reaction equation (string) and returns reactants and products as lists.
-    Example: 'H2 + O2 -> H2O' → (['H2', 'O2'], ['H2O'])
-    """
-    reaction_equation = reaction_equation.replace(" ", "")  # Remove spaces for consistency
+    reaction_equation = reaction_equation.replace(" ", "")
     reactants, products = reaction_equation.split("->")
     return reactants.split("+"), products.split("+")
 
 
 def count_atoms_in_reaction(molecules_list):
-    """
-    Takes a list of molecular formulas and returns a list of atom count dicts.
-    Example: ['H2', 'O2'] → [{'H': 2}, {'O': 2}]
-    """
-    molecules_atoms_count = []
-
-    for molecule in molecules_list:
-        molecules_atoms_count.append(count_atoms_in_molecule(molecule))
-
-    return molecules_atoms_count
+    return [count_atoms_in_molecule(molecule) for molecule in molecules_list]
