@@ -37,12 +37,9 @@ def split_at_digit(formula):
 
 def count_atoms_in_molecule(molecular_formula):
     atoms_count_dict = {}
-    for atom_group in split_before_uppercases(molecular_formula):
-        atom_name, atom_number = split_at_digit(atom_group)
-        if atom_name in atoms_count_dict:
-           atoms_count_dict[atom_name] += atom_number
-        else:
-            atoms_count_dict[atom_name] = atom_number
+    for atom in split_before_uppercases(molecular_formula):
+        atom_name, atom_count = split_at_digit(atom)
+        atoms_count_dict[atom_name] = atoms_count_dict.get(atom_name, 0) + atom_count    
     return atoms_count_dict
 
 
