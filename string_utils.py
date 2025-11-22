@@ -6,7 +6,7 @@ def split_before_uppercases(formula):
     start = 0
 
     for i in range(1, len(formula)):
-        if formula[i].isupper() nd not formula[i-1].islower():
+        if formula[i].isupper() and not formula[i-1].islower():
             parts.append(formula[start:i])
             start = i
 
